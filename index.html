@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Mara - rezultati</title>
+</head>
+<body>
+    <header>
+        <h1>Mara - rezultati</h1>
+    </header>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <label for="disciplineFilter">Discipline:</label>
+            <select id="disciplineFilter" onchange="applyFilters()">
+                <option value="">All</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="competitionFilter">Competition:</label>
+            <select id="competitionFilter" onchange="applyFilters()">
+                <option value="">All</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="placeFilter">Place:</label>
+            <select id="placeFilter" onchange="applyFilters()">
+                <option value="">All</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="indoorFilter">Indoor/Outdoor:</label>
+            <select id="indoorFilter" onchange="applyFilters()">
+                <option value="">All</option>
+                <option value="Otvoreno">Otvoreno</option>
+                <option value="Dvorana">Dvorana</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="sortFilter">Sort by:</label>
+            <select id="sortFilter" onchange="applyFilters()" disabled>
+                <option value="date">Date</option>
+                <option value="result">Result</option>
+            </select>
+        </div>
+    </div> 
+
+    <div class="results">
+        <ul id="resultsList"></ul>
+        
+        <!-- Buttons -->
+        <div class="button-container">
+            <button id="loadMoreBtn" onclick="loadMoreResults()">Load More</button>
+            <button id="addNewBtn" onclick="openAddNewPopup()">Add New</button>
+        </div>
+    </div>
+
+    <!-- Popup for Adding New Record -->
+    <div id="addNewPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Add New Result</h2>
+            <label for="newDiscipline">Discipline:</label>
+            <select id="newDiscipline">
+                <option value="">Select Discipline</option>
+                <!-- Unique disciplines will be added here dynamically -->
+            </select>
+            
+            <label for="newResult">Result:</label>
+            <input type="text" id="newResult" placeholder="Rezultat u sekundama ili metrima (npr. 123.4)" required>
+            
+            <label for="newCompetition">Competition:</label>
+            <input type="text" id="newCompetition" required>
+            
+            <label for="newPlace">Place:</label>
+            <input type="text" id="newPlace" required>
+            
+            <label for="newIndoor">Indoor/Outdoor:</label>
+            <select id="newIndoor">
+                <option value="Otvoreno">Otvoreno</option>
+                <option value="Dvorana">Dvorana</option>
+            </select>
+            
+            <label for="newDate">Date:</label>
+            <input type="date" id="newDate" required>
+
+            <label for="newRemark">Remark:</label>
+            <input type="text" id="newRemark">
+            
+            <button onclick="submitNewResult()">Submit</button>
+        </div>
+    </div>
+
+    <!-- Success Popup Message -->
+    <div id="successMessage" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h3>Record successfully inserted!</h3>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
