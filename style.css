@@ -205,3 +205,18 @@ h1 {
 .error {
     border: 2px solid red;
 }
+
+/* Media Query for Mobile Devices  */
+@media (max-width: 600px) {
+    #resultsList li .result-title {
+        flex-direction: column; /* Stack title and date vertically */
+        align-items: flex-start; /* Align title and date to the left */
+    }
+    
+    #resultsList li .result-title span.result-date {
+        margin-left: 0; /* Remove left margin */
+        margin-top: 0.3rem; /* Add some space above the date */
+        font-size: 0.9rem; /* Optional: reduce font size of the date */
+        color: #555; /* Optional: make the date slightly darker */
+    }
+}
