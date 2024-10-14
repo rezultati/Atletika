@@ -72,7 +72,15 @@
                 <!-- Unique disciplines will be added here dynamically -->
             </select>
             
-            <label for="newResult">Result:</label>
+            <div class="result-input-group">
+                <label for="newResult" class="inline-label">Result in</label>
+                
+                <input type="radio" id="resultMeters" name="resultUnit" value="meters">
+                <label for="resultMeters">meters</label>
+                
+                <input type="radio" id="resultSeconds" name="resultUnit" value="seconds" checked>
+                <label for="resultSeconds">seconds</label>
+            </div>
             <input type="text" id="newResult" placeholder="Rezultat u sekundama ili metrima (npr. 123.4)" required>
             
             <label for="newCompetition">Competition:</label>

@@ -201,9 +201,38 @@ h1 {
     color: #333;
 }
 
+.result-input-group {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;  /* Prevent text wrapping */
+    gap: 8px;  /* Space between elements */
+}
+
+.result-input-group label {
+    margin-left: 5px;
+    margin-right: 10px;
+    vertical-align: middle;  /* Align the labels with the radio buttons */
+}
+
+.result-input-group input[type="radio"] {
+    margin: 0 5px;
+    vertical-align: middle;  /* Align the radio buttons with the labels */
+}
+
 /* Error Styles */
 .error {
     border: 2px solid red;
+}
+
+/* Style the input fields with a red border when they have the 'error' class */
+input.error, select.error {
+    border: 2px solid red;
+    outline: none;
+}
+
+/* Optional: Add some padding or background to make the error more visible */
+input.error::placeholder {
+    color: red;
 }
 
 /* Media Query for Mobile Devices  */

@@ -274,37 +274,44 @@ function submitNewResult() {
     const indoor = document.getElementById('newIndoor').value;
     const date = document.getElementById('newDate').value;
 
+    // Get the selected result unit
+    const resultUnit = document.querySelector('input[name="resultUnit"]:checked').value;
+
     // Validate required fields
     let isValid = true;
 
-    if (!discipline) {
-        document.getElementById('newDiscipline').classList.add('error');
+    // Helper function to add error class
+    function markFieldInvalid(fieldId) {
+        document.getElementById(fieldId).classList.add('error');
         isValid = false;
+    }
+
+    // Validate each field and add red border if invalid
+    if (!discipline) {
+        markFieldInvalid('newDiscipline');
     }
     if (!result) {
-        document.getElementById('newResult').classList.add('error');
-        isValid = false;
+        markFieldInvalid('newResult');
     }
     if (!competition) {
-        document.getElementById('newCompetition').classList.add('error');
-        isValid = false;
+        markFieldInvalid('newCompetition');
     }
     if (!place) {
-        document.getElementById('newPlace').classList.add('error');
-        isValid = false;
+        markFieldInvalid('newPlace');
     }
     if (!indoor) {
-        document.getElementById('newIndoor').classList.add('error');
-        isValid = false;
+        markFieldInvalid('newIndoor');
     }
     if (!date) {
-        document.getElementById('newDate').classList.add('error');
-        isValid = false;
+        markFieldInvalid('newDate');
     }
 
     if (!isValid) {
         return; // Exit if validation fails
     }
+
+    // Send 'true' for seconds and 'false' for meters
+    const time = resultUnit === 'seconds'; 
 
     const newResult = {
         discipline,
@@ -313,7 +320,8 @@ function submitNewResult() {
         indoor,
         date,
         result: parseFloat(result),
-        remark: document.getElementById('newRemark').value
+        remark: document.getElementById('newRemark').value,
+        time // Correctly set 'time' based on the selected radio button
     };
 
     fetch(`${DB_URL}?apikey=${API_KEY}`, {
@@ -328,11 +336,43 @@ function submitNewResult() {
             closePopup();  // Close the form
             document.getElementById('successMessage').style.display = 'block';  // Show success message
             fetchResults();  // Reload results list
+            resetForm();  // Reset form after successful submission
         } else {
             throw new Error('Failed to insert new result');
         }
     })
     .catch(error => console.error('Error adding new result:', error));
+}
+
+// Function to remove error class when the field changes
+function removeErrorClass(event) {
+    event.target.classList.remove('error');
+}
+
+// Add event listeners to remove error class when user interacts with the fields
+document.getElementById('newDiscipline').addEventListener('input', removeErrorClass);
+document.getElementById('newResult').addEventListener('input', removeErrorClass);
+document.getElementById('newCompetition').addEventListener('input', removeErrorClass);
+document.getElementById('newPlace').addEventListener('input', removeErrorClass);
+document.getElementById('newIndoor').addEventListener('change', removeErrorClass); // for select
+document.getElementById('newDate').addEventListener('change', removeErrorClass);   // for date input
+
+// Function to reset the form after successful submission
+function resetForm() {
+    document.getElementById('newDiscipline').value = '';
+    document.getElementById('newResult').value = '';
+    document.getElementById('newCompetition').value = '';
+    document.getElementById('newPlace').value = '';
+    document.getElementById('newIndoor').value = '';
+    document.getElementById('newDate').value = '';
+    document.getElementById('newRemark').value = '';
+
+    // Reset radio buttons, default to meters
+    document.getElementById('resultMeters').checked = true;
+
+    // Remove error styles
+    const fields = ['newDiscipline', 'newResult', 'newCompetition', 'newPlace', 'newIndoor', 'newDate'];
+    fields.forEach(fieldId => document.getElementById(fieldId).classList.remove('error'));
 }
 
 // Initializing the page by fetching filters and results
