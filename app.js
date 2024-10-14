@@ -70,8 +70,8 @@ function populateFilters(data) {
 }
 
 // Fetch results from restdb.io
-function fetchResults(page = 1, append = false) {
-    let queryString = `${DB_URL}?max=${resultsPerPage}&skip=${(page - 1) * resultsPerPage}&sort=${filters.sort}&dir=-1`;
+function fetchResults(page = 1, append = false, sortDirection = 'DESC') {
+    let queryString = `${DB_URL}?max=${resultsPerPage}&skip=${(page - 1) * resultsPerPage}&sort=${filters.sort}&dir=${sortDirection === 'ASC' ? 1 : -1}`;
 
     const filterConditions = [];
 
@@ -176,7 +176,31 @@ function applyFilters() {
     filters.sort = document.getElementById('sortFilter').value;
 
     currentPage = 1;
-    fetchResults(currentPage);
+
+    // If discipline is selected and sorting by result, check if all results have time = true
+    if (filters.discipline && filters.sort === 'result') {
+        fetch(`${DB_URL}?q={"discipline": "${filters.discipline}"}&apikey=${API_KEY}`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            const allTimeBased = data.every(item => item.time === true);
+
+            if (allTimeBased) {
+                // If all records are time-based, sort by result in ascending order
+                filters.sort = 'result';  // Keep the sort by result
+                fetchResults(currentPage, false, 'ASC');  // Sort in ASC order
+            } else {
+                // If not all records are time-based, sort by result in descending order
+                filters.sort = 'result';
+                fetchResults(currentPage, false, 'DESC');  // Sort in DESC order
+            }
+        })
+        .catch(error => console.error('Error fetching discipline data:', error));
+    } else {
+        // Fetch results with default sorting (e.g., by date or competition)
+        fetchResults(currentPage);
+    }
 }
 
 // Load more results
