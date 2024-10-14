@@ -30,10 +30,17 @@ function populateFilters(data) {
     const competitionFilter = document.getElementById('competitionFilter');
     const placeFilter = document.getElementById('placeFilter');
 
-    const disciplines = [...new Set(data.map(item => item.discipline))];
-    const competitions = [...new Set(data.map(item => item.competition))];
-    const places = [...new Set(data.map(item => item.place))];
+    // Get unique disciplines, competitions, and places
+    let disciplines = [...new Set(data.map(item => item.discipline))];
+    let competitions = [...new Set(data.map(item => item.competition))];
+    let places = [...new Set(data.map(item => item.place))];
 
+    // Sort the arrays alphabetically
+    disciplines.sort();
+    competitions.sort();
+    places.sort();
+
+    // Populate discipline filter
     disciplines.forEach(discipline => {
         const option = document.createElement('option');
         option.value = discipline;
@@ -41,6 +48,7 @@ function populateFilters(data) {
         disciplineFilter.appendChild(option);
     });
 
+    // Populate competition filter
     competitions.forEach(competition => {
         const option = document.createElement('option');
         option.value = competition;
@@ -48,6 +56,7 @@ function populateFilters(data) {
         competitionFilter.appendChild(option);
     });
 
+    // Populate place filter
     places.forEach(place => {
         const option = document.createElement('option');
         option.value = place;
